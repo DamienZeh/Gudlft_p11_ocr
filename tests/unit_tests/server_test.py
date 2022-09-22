@@ -279,3 +279,24 @@ def test_purchase_points_club_update(client):
     assert "Great-booking complete!" in str(response.data.decode())
     assert clubs["points"] == 0
     assert response.status_code == 200
+
+
+"""
+TESTS FOR : Feature/'implement_points_display_board' :
+"""
+
+
+def test_page_display_clubs_and_points(client):
+    response = client.get("/display_clubs")
+    assert response.status_code == 200
+
+
+def test_display_clubs(client):
+    response = client.get("/display_clubs")
+    assert "club-test1" in str(response.data)
+    assert "club-test2" in str(response.data)
+
+
+def test_presence_link_to_index(client):
+    response = client.get("/display_clubs")
+    assert "Retour à l'accueil" in str(response.data.decode())
