@@ -6,12 +6,13 @@
 </head>
 <body>
     <h2>{{competition['name']}}</h2>
-    <p>Places available: {{competition['numberOfPlaces']}}</p>
-    <p>You can reserve a maximum of 12 places.</p>
-    <p>Points available: {{club['points']}}</p>
-    <p>3 points = 1 place.</p>
+    <p>Places available: {{competition['number_of_places']}}</p>
+    {% if club[competition["name"]] %}
+        <p>places reserved for this competition: {{club[competition["name"]]}} (12 max)</p>
+    {% endif%} 
+    <p>Points available: {{club['points']}} (3 points = 1 place).</p> 
     <br>
-    <form action="/purchasePlaces" method="post">
+    <form action="/purchase_places" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
         <label for="places">How many places?</label><input type="number" name="places" id=""/>
