@@ -1,4 +1,4 @@
-![Alt text](https://github.com/DamienZeh/Gudlft_p11_ocr/blob/reports_and_new_readme/logo/logo.png)<br>
+![Alt text](https://github.com/DamienZeh/Gudlft_p11_ocr/blob/cleaning_and_finalization/logo/logo.png)<br>
 
 # Güdlft
 
@@ -56,7 +56,7 @@ Pour lancer l'application, tapez les commandes:<br/>
 
 Puis :  ``flask run ``<br/>
 Il suffira ensuite d'aller sur le site : **http://127.0.0.1:5000/**.<br/>
-Pour se connecter, il faut faire parti des clubs inscrits. ID de ces clubs en exemple :<br/>
+Pour se connecter, il faut faire parti des clubs inscrits. Voici les ids des clubs en exemple :<br/>
 - john@simplylift.co
 - admin@irontemple.com
 - kate@shelifts.co.uk
@@ -91,7 +91,7 @@ Il faut que l'application soit lancée(comme on a vu un peu plus haut), puis ouv
 ``locust -f tests/performance_tests/locustfile.py --web-host localhost``.<br/>
 
 Il faudra ensuite aller sur **http://localhost:8089**, et lancer les tests.<br/>
-Ou si vous souhaitez juste voir les résultats déjà réalisés, ils sont disponibles dans le projet(fichiers .png).<br/><br/>
+Ou si vous souhaitez juste voir les résultats déjà réalisés, ils sont disponibles dans le projet(dossier reports).<br/><br/>
 
 ## Vérification du code
 - Pour faire un contrôle du code avec **flake8** (avec max lenght à 79, sauf pour le settings.py), tapez :<br/>
