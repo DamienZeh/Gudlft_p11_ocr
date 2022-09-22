@@ -29,6 +29,9 @@ def index():
 
 @app.route("/show_summary", methods=["POST"])
 def show_summary():
+    """
+    It allows you to login in app & see all competitions.
+    """
     try:
         club = [
             club for club in clubs if club["email"] == request.form["email"]
@@ -46,6 +49,11 @@ def show_summary():
 
 @app.route("/book/<competition>/<club>")
 def book(competition, club):
+    """
+    It allows you to reserve places in a competition.
+
+    We have access to the registration form for a competition
+    """
     found_club = [c for c in clubs if c["name"] == club][0]
     found_competition = [c for c in competitions if c["name"] == competition][
         0
@@ -63,6 +71,12 @@ def book(competition, club):
 
 @app.route("/purchase_places", methods=["POST"])
 def purchase_places():
+    """
+    It allows you to register for competitions using club points.
+    - 12 places max per account;
+    - 3 points are redeemed for one place in the competition;
+
+    """
     point_per_place = 3
     competition = [
         c for c in competitions if c["name"] == request.form["competition"]
