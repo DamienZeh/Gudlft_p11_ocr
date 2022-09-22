@@ -5,6 +5,7 @@ server.clubs = [
     {"name": "club-test2", "email": "user-exist2@test.fr", "points": "7"},
     {"name": "club-test3", "email": "user-exist3@test.fr", "points": "15"},
     {"name": "club-test4", "email": "user-exist4@test.fr", "points": "12"},
+    {"name": "club-test5", "email": "user-exist5@test.fr", "points": "1"},
 ]
 
 server.competitions = [
@@ -255,4 +256,26 @@ def test_purchase_with_bad_date(client):
         "You cannot book this competition, because it has already taken place."
         in str(response.data.decode())
     )
+    assert response.status_code == 200
+
+
+"""
+TESTS FOR : Bug/'points_updates_are_not_reflected' :
+"""
+
+
+def test_purchase_points_club_update(client):
+    clubs = server.clubs[4]
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test5",
+            "competition": "Competition-test4",
+            "date": "2019-10-02 00:00:00",
+            "places": "1",
+        },
+    )
+
+    assert "Great-booking complete!" in str(response.data.decode())
+    assert clubs["points"] == 0
     assert response.status_code == 200

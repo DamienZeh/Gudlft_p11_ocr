@@ -90,6 +90,7 @@ def purchasePlaces():
                         club[competition["name"]] = (
                             int(club[competition["name"]]) + placesRequired
                         )
+                        club["points"] = int(club["points"]) - placesRequired
                         flash("Great-booking complete!")
                     elif placesRequired > int(club["points"]):
                         flash("You cannot reserve more places than you have")
