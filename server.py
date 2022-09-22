@@ -1,5 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
+from datetime import datetime
 
 
 def loadClubs():
@@ -69,35 +70,43 @@ def purchasePlaces():
         flash("You must type a number !")
     else:
         placesRequired = int(request.form["places"])
+        competition_time = datetime.strptime(competition["date"], "%Y-%m-%d %H:%M:%S")
 
         # add name competition + places booked in value, in club dict.
         if competition["name"] not in club:
             club[competition["name"]] = int(0)
 
-        if placesRequired <= 0:
-            flash("You cannot reserve 0 places or negative number !")
-        else:
-            if placesRequired + club[competition["name"]] < 13:
-                if placesRequired <= int(
-                    competition["numberOfPlaces"]
-                ) and placesRequired <= int(club["points"]):
-                    competition["numberOfPlaces"] = (
-                        int(competition["numberOfPlaces"]) - placesRequired
-                    )
-                    club[competition["name"]] = (
-                        int(club[competition["name"]]) + placesRequired
-                    )
-                    flash("Great-booking complete!")
-                elif placesRequired > int(club["points"]):
-                    flash("You cannot reserve more places than you have")
-                elif int(club["points"]) > int(competition["numberOfPlaces"]):
-                    flash(
-                        f"Problem, the competition only has {int(competition['numberOfPlaces'])} places, you ask for {placesRequired}"
-                    )
-                else:
-                    flash("There was a problem, please try again")
+        if datetime.now() < competition_time:
+            if placesRequired <= 0:
+                flash("You cannot reserve 0 places or negative number !")
             else:
-                flash("No more than 12 places per competition !")
+                if placesRequired + club[competition["name"]] < 13:
+                    if placesRequired <= int(
+                        competition["numberOfPlaces"]
+                    ) and placesRequired <= int(club["points"]):
+                        competition["numberOfPlaces"] = (
+                            int(competition["numberOfPlaces"]) - placesRequired
+                        )
+                        club[competition["name"]] = (
+                            int(club[competition["name"]]) + placesRequired
+                        )
+                        flash("Great-booking complete!")
+                    elif placesRequired > int(club["points"]):
+                        flash("You cannot reserve more places than you have")
+                    elif int(club["points"]) > int(
+                        competition["numberOfPlaces"]
+                    ):
+                        flash(
+                            f"Problem, the competition only has {int(competition['numberOfPlaces'])} places, you ask for {placesRequired}"
+                        )
+                    else:
+                        flash("There was a problem, please try again")
+                else:
+                    flash("No more than 12 places per competition !")
+        else:
+            flash(
+                "You cannot book this competition, because it has already taken place."
+            )
     return render_template(
         "welcome.html", club=club, competitions=competitions
     )

@@ -25,12 +25,12 @@ server.competitions = [
     },
     {
         "name": "Competition-test4",
-        "date": "2022-10-02 00:00:00",
+        "date": "2023-10-02 00:00:00",
         "numberOfPlaces": "12",
     },
     {
         "name": "Competition-test5",
-        "date": "2021-09-02 00:00:00",
+        "date": "2023-09-02 00:00:00",
         "numberOfPlaces": "12",
     },
 ]
@@ -216,3 +216,43 @@ def test_purchase_with_too_much_points_accumulate_per_competition(client):
     assert "No more than 12 places per competition !" in str(
         response_second.data.decode()
     )
+
+
+"""
+TESTS FOR : Bug/'Booking places in past competitions' :
+"""
+
+
+def test_purchase_with_good_date(client):
+    competitions = server.competitions[1]
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test3",
+            "competition": "Competition-test2",
+            "date": "2030-12-12 00:00:00",
+            "places": "1",
+        },
+    )
+    assert competitions["numberOfPlaces"] == 4
+    assert "Great-booking complete!" in str(response.data.decode())
+    assert response.status_code == 200
+
+
+def test_purchase_with_bad_date(client):
+    competitions = server.competitions[2]
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test2",
+            "competition": "Competition-test3",
+            "date": "2019-10-02 00:00:00",
+            "places": "1",
+        },
+    )
+    assert competitions["numberOfPlaces"] == "7"
+    assert (
+        "You cannot book this competition, because it has already taken place."
+        in str(response.data.decode())
+    )
+    assert response.status_code == 200
