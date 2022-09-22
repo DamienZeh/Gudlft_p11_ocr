@@ -3,6 +3,8 @@ import server
 server.clubs = [
     {"name": "club-test1", "email": "user-exist@test.fr", "points": "1"},
     {"name": "club-test2", "email": "user-exist2@test.fr", "points": "7"},
+    {"name": "club-test3", "email": "user-exist3@test.fr", "points": "15"},
+    {"name": "club-test4", "email": "user-exist4@test.fr", "points": "12"},
 ]
 
 server.competitions = [
@@ -15,6 +17,21 @@ server.competitions = [
         "name": "Competition-test2",
         "date": "2030-12-12 00:00:00",
         "numberOfPlaces": "5",
+    },
+    {
+        "name": "Competition-test3",
+        "date": "2019-10-02 00:00:00",
+        "numberOfPlaces": "7",
+    },
+    {
+        "name": "Competition-test4",
+        "date": "2022-10-02 00:00:00",
+        "numberOfPlaces": "12",
+    },
+    {
+        "name": "Competition-test5",
+        "date": "2021-09-02 00:00:00",
+        "numberOfPlaces": "12",
     },
 ]
 """
@@ -141,3 +158,61 @@ def test_purchase_with_negative_point_per_competition(client):
         response.data.decode()
     )
     assert response.status_code == 200
+
+
+"""
+TESTS FOR : Bug/'Clubs can't be able to book more than 12 places per competition' :
+"""
+
+
+def test_purchase_with_twelve_points_ok(client):
+    competitions = server.competitions[4]
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test4",
+            "competition": "Competition-test5",
+            "places": "12",
+        },
+    )
+    assert "Great-booking complete!" in str(response.data.decode())
+    assert competitions["numberOfPlaces"] == 0
+    assert response.status_code == 200
+
+
+def test_purchase_with_too_much_points_per_competition(client):
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test3",
+            "competition": "Competition-test2",
+            "places": "13",
+        },
+    )
+    assert "No more than 12 places per competition !" in str(
+        response.data.decode()
+    )
+    assert response.status_code == 200
+
+
+def test_purchase_with_too_much_points_accumulate_per_competition(client):
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test3",
+            "competition": "Competition-test4",
+            "places": "3",
+        },
+    )
+    assert response.status_code == 200
+    response_second = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test3",
+            "competition": "Competition-test4",
+            "places": "10",
+        },
+    )
+    assert "No more than 12 places per competition !" in str(
+        response_second.data.decode()
+    )

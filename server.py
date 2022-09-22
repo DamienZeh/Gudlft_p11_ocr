@@ -69,24 +69,35 @@ def purchasePlaces():
         flash("You must type a number !")
     else:
         placesRequired = int(request.form["places"])
+
+        # add name competition + places booked in value, in club dict.
+        if competition["name"] not in club:
+            club[competition["name"]] = int(0)
+
         if placesRequired <= 0:
             flash("You cannot reserve 0 places or negative number !")
         else:
-            if placesRequired <= int(
-                competition["numberOfPlaces"]
-            ) and placesRequired <= int(club["points"]):
-                competition["numberOfPlaces"] = (
-                    int(competition["numberOfPlaces"]) - placesRequired
-                )
-                flash("Great-booking complete!")
-            elif placesRequired > int(club["points"]):
-                flash("You cannot reserve more places than you have")
-            elif int(club["points"]) > int(competition["numberOfPlaces"]):
-                flash(
-                    f"Problem, the competition only has {int(competition['numberOfPlaces'])} places, you ask for {placesRequired}"
-                )
+            if placesRequired + club[competition["name"]] < 13:
+                if placesRequired <= int(
+                    competition["numberOfPlaces"]
+                ) and placesRequired <= int(club["points"]):
+                    competition["numberOfPlaces"] = (
+                        int(competition["numberOfPlaces"]) - placesRequired
+                    )
+                    club[competition["name"]] = (
+                        int(club[competition["name"]]) + placesRequired
+                    )
+                    flash("Great-booking complete!")
+                elif placesRequired > int(club["points"]):
+                    flash("You cannot reserve more places than you have")
+                elif int(club["points"]) > int(competition["numberOfPlaces"]):
+                    flash(
+                        f"Problem, the competition only has {int(competition['numberOfPlaces'])} places, you ask for {placesRequired}"
+                    )
+                else:
+                    flash("There was a problem, please try again")
             else:
-                flash("There was a problem, please try again")
+                flash("No more than 12 places per competition !")
     return render_template(
         "welcome.html", club=club, competitions=competitions
     )
