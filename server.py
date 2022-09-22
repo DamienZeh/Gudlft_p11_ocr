@@ -61,16 +61,21 @@ def book(competition, club):
 
 @app.route("/purchasePlaces", methods=["POST"])
 def purchasePlaces():
+    point_per_place = 3
     competition = [
         c for c in competitions if c["name"] == request.form["competition"]
     ][0]
     club = [c for c in clubs if c["name"] == request.form["club"]][0]
+
     placesRequired = request.form["places"]
     if placesRequired == "":
         flash("You must type a number !")
     else:
         placesRequired = int(request.form["places"])
-        competition_time = datetime.strptime(competition["date"], "%Y-%m-%d %H:%M:%S")
+
+        competition_time = datetime.strptime(
+            competition["date"], "%Y-%m-%d %H:%M:%S"
+        )
 
         # add name competition + places booked in value, in club dict.
         if competition["name"] not in club:
@@ -83,22 +88,30 @@ def purchasePlaces():
                 if placesRequired + club[competition["name"]] < 13:
                     if placesRequired <= int(
                         competition["numberOfPlaces"]
-                    ) and placesRequired <= int(club["points"]):
+                    ) and placesRequired * point_per_place <= int(
+                        club["points"]
+                    ):
                         competition["numberOfPlaces"] = (
                             int(competition["numberOfPlaces"]) - placesRequired
                         )
                         club[competition["name"]] = (
                             int(club[competition["name"]]) + placesRequired
                         )
-                        club["points"] = int(club["points"]) - placesRequired
+                        club["points"] = int(club["points"]) - (
+                            placesRequired * point_per_place
+                        )
                         flash("Great-booking complete!")
-                    elif placesRequired > int(club["points"]):
+                    elif placesRequired * point_per_place > int(
+                        club["points"]
+                    ):
                         flash("You cannot reserve more places than you have")
                     elif int(club["points"]) > int(
                         competition["numberOfPlaces"]
                     ):
                         flash(
-                            f"Problem, the competition only has {int(competition['numberOfPlaces'])} places, you ask for {placesRequired}"
+                            f"Problem, the competition only has \
+                                {int(competition['numberOfPlaces'])}\
+                                 places, you ask for {placesRequired}"
                         )
                     else:
                         flash("There was a problem, please try again")
@@ -106,8 +119,10 @@ def purchasePlaces():
                     flash("No more than 12 places per competition !")
         else:
             flash(
-                "You cannot book this competition, because it has already taken place."
+                "You cannot book this competition,\
+                     because it has already taken place."
             )
+
     return render_template(
         "welcome.html", club=club, competitions=competitions
     )

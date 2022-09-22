@@ -11,10 +11,10 @@ def test_mail_in_db(client):
         "/showSummary", data={"email": "user-exist@test.fr"}
     )
     assert "Welcome, user-exist@test.fr" in str(response.data.decode())
-    assert not "You cannot leave this field empty !" in str(
+    assert "You cannot leave this field empty !" not in str(
         response.data.decode()
     )
-    assert not "Email not in database !" in str(response.data.decode())
+    assert "Email not in database !" not in str(response.data.decode())
     assert response.status_code == 200
 
 
@@ -38,7 +38,8 @@ def test_logout(client):
 
 
 """
-TESTS FOR : Bug/'Clubs should not be able to use more than their points allowed' :
+TESTS FOR :
+ Bug/'Clubs should not be able to use more than their points allowed' :
 """
 
 
@@ -91,12 +92,15 @@ def test_purchase_too_points_entered_per_competition(client):
         data={
             "club": "club-test2",
             "competition": "Competition-test2",
-            "places": "7",
+            "places": "6",
         },
     )
-    assert str.encode(f"Number of Places: 5") in response.data
-    assert "Problem, the competition only has 5 places, you ask for 7" in str(
-        response.data.decode()
+    assert str.encode("Number of Places: 5") in response.data
+    assert (
+        "Problem, the competition only has \
+                                5\
+                                 places, you ask for 6"
+        in str(response.data.decode())
     )
     assert response.status_code == 200
 
@@ -132,7 +136,8 @@ def test_purchase_with_negative_point_per_competition(client):
 
 
 """
-TESTS FOR : Bug/'Clubs can't be able to book more than 12 places per competition' :
+TESTS FOR :
+ Bug/'Clubs can't be able to book more than 12 places per competition' :
 """
 
 
@@ -223,7 +228,8 @@ def test_purchase_with_bad_date(client):
     )
     assert competitions["numberOfPlaces"] == "7"
     assert (
-        "You cannot book this competition, because it has already taken place."
+        "You cannot book this competition,\
+                     because it has already taken place."
         in str(response.data.decode())
     )
     assert response.status_code == 200

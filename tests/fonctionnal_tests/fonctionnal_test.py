@@ -7,6 +7,10 @@ TESTS FONCTIONNELS :
 
 
 def test_fonctionnal(client):
+    """
+    It's a test that allows you to login, and reserve places,
+        until you take too many. Then we disconnect
+    """
     competitions = server.competitions[6]
     clubs = server.clubs[6]
     response = client.post(
@@ -24,7 +28,7 @@ def test_fonctionnal(client):
             "places": "1",
         },
     )
-    assert clubs["points"] == 4
+    assert clubs["points"] == 12
     assert competitions["numberOfPlaces"] == 3
     assert "Great-booking complete!" in str(response.data.decode())
     assert response.status_code == 200
@@ -37,7 +41,7 @@ def test_fonctionnal(client):
             "places": "2",
         },
     )
-    assert clubs["points"] == 2
+    assert clubs["points"] == 6
     assert competitions["numberOfPlaces"] == 1
     assert "Great-booking complete!" in str(response.data.decode())
     assert response.status_code == 200
@@ -50,10 +54,13 @@ def test_fonctionnal(client):
             "places": "2",
         },
     )
-    assert "Problem, the competition only has 1 places, you ask for 2" in str(
-        response.data.decode()
+    assert (
+        "Problem, the competition only has \
+                                1\
+                                 places, you ask for 2"
+        in str(response.data.decode())
     )
-    assert clubs["points"] == 2
+    assert clubs["points"] == 6
     assert competitions["numberOfPlaces"] == 1
 
     response = client.get("/display_clubs")
