@@ -1,40 +1,6 @@
 import server
 
-server.clubs = [
-    {"name": "club-test1", "email": "user-exist@test.fr", "points": "1"},
-    {"name": "club-test2", "email": "user-exist2@test.fr", "points": "7"},
-    {"name": "club-test3", "email": "user-exist3@test.fr", "points": "15"},
-    {"name": "club-test4", "email": "user-exist4@test.fr", "points": "12"},
-    {"name": "club-test5", "email": "user-exist5@test.fr", "points": "1"},
-]
 
-server.competitions = [
-    {
-        "name": "Competition-test1",
-        "date": "2023-02-07 00:00:00",
-        "numberOfPlaces": "15",
-    },
-    {
-        "name": "Competition-test2",
-        "date": "2030-12-12 00:00:00",
-        "numberOfPlaces": "5",
-    },
-    {
-        "name": "Competition-test3",
-        "date": "2019-10-02 00:00:00",
-        "numberOfPlaces": "7",
-    },
-    {
-        "name": "Competition-test4",
-        "date": "2023-10-02 00:00:00",
-        "numberOfPlaces": "12",
-    },
-    {
-        "name": "Competition-test5",
-        "date": "2023-09-02 00:00:00",
-        "numberOfPlaces": "12",
-    },
-]
 """
 TESTS FOR : Error/'Entering a unknown email crashes the app' & logout :
 """
@@ -43,6 +9,10 @@ TESTS FOR : Error/'Entering a unknown email crashes the app' & logout :
 def test_mail_in_db(client):
     response = client.post(
         "/showSummary", data={"email": "user-exist@test.fr"}
+    )
+    assert "Welcome, user-exist@test.fr" in str(response.data.decode())
+    assert not "You cannot leave this field empty !" in str(
+        response.data.decode()
     )
     assert not "Email not in database !" in str(response.data.decode())
     assert response.status_code == 200

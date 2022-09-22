@@ -1,0 +1,64 @@
+import server
+
+
+"""
+TESTS FONCTIONNELS :
+"""
+
+
+def test_fonctionnal(client):
+    competitions = server.competitions[6]
+    clubs = server.clubs[6]
+    response = client.post(
+        "/showSummary", data={"email": "user-exist7@test.fr"}
+    )
+    assert "Welcome, user-exist7@test.fr" in str(response.data.decode())
+    assert response.status_code == 200
+
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test7",
+            "competition": "Competition-test7",
+            "points": "0",
+            "places": "1",
+        },
+    )
+    assert clubs["points"] == 4
+    assert competitions["numberOfPlaces"] == 3
+    assert "Great-booking complete!" in str(response.data.decode())
+    assert response.status_code == 200
+
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test7",
+            "competition": "Competition-test7",
+            "places": "2",
+        },
+    )
+    assert clubs["points"] == 2
+    assert competitions["numberOfPlaces"] == 1
+    assert "Great-booking complete!" in str(response.data.decode())
+    assert response.status_code == 200
+
+    response = client.post(
+        "/purchasePlaces",
+        data={
+            "club": "club-test7",
+            "competition": "Competition-test7",
+            "places": "2",
+        },
+    )
+    assert "Problem, the competition only has 1 places, you ask for 2" in str(
+        response.data.decode()
+    )
+    assert clubs["points"] == 2
+    assert competitions["numberOfPlaces"] == 1
+
+    response = client.get("/display_clubs")
+    assert "club-test7" in str(response.data)
+    assert "2" in str(response.data)
+
+    response = client.get("/logout")
+    assert response.status_code == 302
