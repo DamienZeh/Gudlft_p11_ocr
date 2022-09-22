@@ -1,4 +1,5 @@
-import server, pytest
+import server
+import pytest
 
 
 @pytest.fixture

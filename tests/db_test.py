@@ -14,36 +14,36 @@ server.competitions = [
     {
         "name": "Competition-test1",
         "date": "2023-02-07 00:00:00",
-        "numberOfPlaces": "15",
+        "number_of_places": "15",
     },
     {
         "name": "Competition-test2",
         "date": "2030-12-12 00:00:00",
-        "numberOfPlaces": "5",
+        "number_of_places": "5",
     },
     {
         "name": "Competition-test3",
         "date": "2019-10-02 00:00:00",
-        "numberOfPlaces": "7",
+        "number_of_places": "7",
     },
     {
         "name": "Competition-test4",
         "date": "2023-10-02 00:00:00",
-        "numberOfPlaces": "12",
+        "number_of_places": "12",
     },
     {
         "name": "Competition-test5",
         "date": "2023-09-02 00:00:00",
-        "numberOfPlaces": "12",
+        "number_of_places": "12",
     },
     {
         "name": "Competition-test6",
         "date": "2024-07-03 00:00:00",
-        "numberOfPlaces": "12",
+        "number_of_places": "12",
     },
     {
         "name": "Competition-test7",
         "date": "2023-05-04 00:00:00",
-        "numberOfPlaces": "4",
+        "number_of_places": "4",
     },
 ]

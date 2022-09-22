@@ -3,23 +3,23 @@ from flask import Flask, render_template, request, redirect, flash, url_for
 from datetime import datetime
 
 
-def loadClubs():
+def load_clubs():
     with open("clubs.json") as c:
-        listOfClubs = json.load(c)["clubs"]
-        return listOfClubs
+        list_of_clubs = json.load(c)["clubs"]
+        return list_of_clubs
 
 
-def loadCompetitions():
+def load_competitions():
     with open("competitions.json") as comps:
-        listOfCompetitions = json.load(comps)["competitions"]
-        return listOfCompetitions
+        list_of_competitions = json.load(comps)["competitions"]
+        return list_of_competitions
 
 
 app = Flask(__name__)
 app.secret_key = "something_special"
 
-competitions = loadCompetitions()
-clubs = loadClubs()
+competitions = load_competitions()
+clubs = load_clubs()
 
 
 @app.route("/")
@@ -27,8 +27,8 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/showSummary", methods=["POST"])
-def showSummary():
+@app.route("/show_summary", methods=["POST"])
+def show_summary():
     try:
         club = [
             club for club in clubs if club["email"] == request.form["email"]
@@ -46,11 +46,13 @@ def showSummary():
 
 @app.route("/book/<competition>/<club>")
 def book(competition, club):
-    foundClub = [c for c in clubs if c["name"] == club][0]
-    foundCompetition = [c for c in competitions if c["name"] == competition][0]
-    if foundClub and foundCompetition:
+    found_club = [c for c in clubs if c["name"] == club][0]
+    found_competition = [c for c in competitions if c["name"] == competition][
+        0
+    ]
+    if found_club and found_competition:
         return render_template(
-            "booking.html", club=foundClub, competition=foundCompetition
+            "booking.html", club=found_club, competition=found_competition
         )
     else:
         flash("Something went wrong-please try again")
@@ -59,19 +61,19 @@ def book(competition, club):
         )
 
 
-@app.route("/purchasePlaces", methods=["POST"])
-def purchasePlaces():
+@app.route("/purchase_places", methods=["POST"])
+def purchase_places():
     point_per_place = 3
     competition = [
         c for c in competitions if c["name"] == request.form["competition"]
     ][0]
     club = [c for c in clubs if c["name"] == request.form["club"]][0]
 
-    placesRequired = request.form["places"]
-    if placesRequired == "":
+    places_required = request.form["places"]
+    if places_required == "":
         flash("You must type a number !")
     else:
-        placesRequired = int(request.form["places"])
+        places_required = int(request.form["places"])
 
         competition_time = datetime.strptime(
             competition["date"], "%Y-%m-%d %H:%M:%S"
@@ -82,36 +84,37 @@ def purchasePlaces():
             club[competition["name"]] = int(0)
 
         if datetime.now() < competition_time:
-            if placesRequired <= 0:
+            if places_required <= 0:
                 flash("You cannot reserve 0 places or negative number !")
             else:
-                if placesRequired + club[competition["name"]] < 13:
-                    if placesRequired <= int(
-                        competition["numberOfPlaces"]
-                    ) and placesRequired * point_per_place <= int(
+                if places_required + club[competition["name"]] < 13:
+                    if places_required <= int(
+                        competition["number_of_places"]
+                    ) and places_required * point_per_place <= int(
                         club["points"]
                     ):
-                        competition["numberOfPlaces"] = (
-                            int(competition["numberOfPlaces"]) - placesRequired
+                        competition["number_of_places"] = (
+                            int(competition["number_of_places"])
+                            - places_required
                         )
                         club[competition["name"]] = (
-                            int(club[competition["name"]]) + placesRequired
+                            int(club[competition["name"]]) + places_required
                         )
                         club["points"] = int(club["points"]) - (
-                            placesRequired * point_per_place
+                            places_required * point_per_place
                         )
                         flash("Great-booking complete!")
-                    elif placesRequired * point_per_place > int(
+                    elif places_required * point_per_place > int(
                         club["points"]
                     ):
                         flash("You cannot reserve more places than you have")
                     elif int(club["points"]) > int(
-                        competition["numberOfPlaces"]
+                        competition["number_of_places"]
                     ):
                         flash(
                             f"Problem, the competition only has \
-                                {int(competition['numberOfPlaces'])}\
-                                 places, you ask for {placesRequired}"
+                                {int(competition['number_of_places'])}\
+                                 places, you ask for {places_required}"
                         )
                     else:
                         flash("There was a problem, please try again")

@@ -8,7 +8,7 @@ TESTS FOR : Error/'Entering a unknown email crashes the app' & logout :
 
 def test_mail_in_db(client):
     response = client.post(
-        "/showSummary", data={"email": "user-exist@test.fr"}
+        "/show_summary", data={"email": "user-exist@test.fr"}
     )
     assert "Welcome, user-exist@test.fr" in str(response.data.decode())
     assert "You cannot leave this field empty !" not in str(
@@ -20,14 +20,14 @@ def test_mail_in_db(client):
 
 def test_mail_not_in_db(client):
     response = client.post(
-        "/showSummary", data={"email": "wrongmailtest@test.fr"}
+        "/show_summary", data={"email": "wrongmailtest@test.fr"}
     )
     assert "Email not in database !" in str(response.data.decode())
     assert response.status_code == 200
 
 
 def test_mail_empty(client):
-    response = client.post("/showSummary", data={"email": ""})
+    response = client.post("/show_summary", data={"email": ""})
     assert "You cannot leave this field empty !" in str(response.data.decode())
     assert response.status_code == 200
 
@@ -46,21 +46,21 @@ TESTS FOR :
 def test_purchase_great_booking(client):
     competitions = server.competitions[0]
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test1",
             "competition": "Competition-test1",
             "places": "1",
         },
     )
-    assert competitions["numberOfPlaces"] == 14
+    assert competitions["number_of_places"] == 14
     assert "Great-booking complete!" in str(response.data.decode())
     assert response.status_code == 200
 
 
 def test_purchase_with_blank_field_per_competition(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test1",
             "competition": "Competition-test2",
@@ -73,7 +73,7 @@ def test_purchase_with_blank_field_per_competition(client):
 
 def test_purchase_too_points_entered_per_club(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test1",
             "competition": "Competition-test1",
@@ -88,7 +88,7 @@ def test_purchase_too_points_entered_per_club(client):
 
 def test_purchase_too_points_entered_per_competition(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test2",
             "competition": "Competition-test2",
@@ -107,7 +107,7 @@ def test_purchase_too_points_entered_per_competition(client):
 
 def test_purchase_with_zero_point_per_competition(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test2",
             "competition": "Competition-test2",
@@ -122,7 +122,7 @@ def test_purchase_with_zero_point_per_competition(client):
 
 def test_purchase_with_negative_point_per_competition(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test2",
             "competition": "Competition-test2",
@@ -144,7 +144,7 @@ TESTS FOR :
 def test_purchase_with_twelve_points_ok(client):
     competitions = server.competitions[4]
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test4",
             "competition": "Competition-test5",
@@ -152,13 +152,13 @@ def test_purchase_with_twelve_points_ok(client):
         },
     )
     assert "Great-booking complete!" in str(response.data.decode())
-    assert competitions["numberOfPlaces"] == 0
+    assert competitions["number_of_places"] == 0
     assert response.status_code == 200
 
 
 def test_purchase_with_too_much_points_per_competition(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test3",
             "competition": "Competition-test2",
@@ -173,7 +173,7 @@ def test_purchase_with_too_much_points_per_competition(client):
 
 def test_purchase_with_too_much_points_accumulate_per_competition(client):
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test3",
             "competition": "Competition-test4",
@@ -182,7 +182,7 @@ def test_purchase_with_too_much_points_accumulate_per_competition(client):
     )
     assert response.status_code == 200
     response_second = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test3",
             "competition": "Competition-test4",
@@ -202,7 +202,7 @@ TESTS FOR : Bug/'Booking places in past competitions' :
 def test_purchase_with_good_date(client):
     competitions = server.competitions[1]
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test3",
             "competition": "Competition-test2",
@@ -210,7 +210,7 @@ def test_purchase_with_good_date(client):
             "places": "1",
         },
     )
-    assert competitions["numberOfPlaces"] == 4
+    assert competitions["number_of_places"] == 4
     assert "Great-booking complete!" in str(response.data.decode())
     assert response.status_code == 200
 
@@ -218,7 +218,7 @@ def test_purchase_with_good_date(client):
 def test_purchase_with_bad_date(client):
     competitions = server.competitions[2]
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test2",
             "competition": "Competition-test3",
@@ -226,7 +226,7 @@ def test_purchase_with_bad_date(client):
             "places": "1",
         },
     )
-    assert competitions["numberOfPlaces"] == "7"
+    assert competitions["number_of_places"] == "7"
     assert (
         "You cannot book this competition,\
                      because it has already taken place."
@@ -243,7 +243,7 @@ TESTS FOR : Bug/'points_updates_are_not_reflected' :
 def test_purchase_points_club_update(client):
     clubs = server.clubs[4]
     response = client.post(
-        "/purchasePlaces",
+        "/purchase_places",
         data={
             "club": "club-test5",
             "competition": "Competition-test4",

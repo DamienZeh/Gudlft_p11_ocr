@@ -11,13 +11,13 @@ class GudlftPerfTest(HttpUser):
         self.client.get("/book/Fall Classic/She Lifts")
 
     @task
-    def showSummary(self):
-        self.client.post("/showSummary", data={"email": "kate@shelifts.co.uk"})
+    def show_summary(self):
+        self.client.post("/show_summary", data={"email": "kate@shelifts.co.uk"})
 
     @task
     def purchase(self):
         self.client.post(
-            "/purchasePlaces",
+            "/purchase_places",
             data={
                 "competition": "Fall Classic",
                 "club": "She Lifts",
