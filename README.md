@@ -1,51 +1,110 @@
-# gudlift-registration
+![Alt text](https://github.com/DamienZeh/Gudlft_p11_ocr/blob/reports_and_new_readme/logo/logo.png)<br>
 
-1. Why
+# Güdlft
 
+Cette application permet à des clubs sportifs de pouvoir réserver des places pour des compétitions.<br> Les secrétaires de clubs, une fois connectées, peuvent:<br>
+- Voir les points de leur club;
+- Voir les compétitions proposées(et celles qui ont eu déjà lieu);
+- Y réserver des places(dans une limite de 12 places par compétition, par club);
+- Un club peut réserver des places grâce à ses points.
+- Il faudra 3 points pour réserver 1 place.
 
-    This is a proof of concept (POC) project to show a light-weight version of our competition booking platform. The aim is the keep things as light as possible, and use feedback from the users to iterate.
+On peut aussi afficher les clubs et leurs points, sans besoin d'être connecté.<br>
 
-2. Getting Started
-
-    This project uses the following technologies:
-
-    * Python v3.x+
-
-    * [Flask](https://flask.palletsprojects.com/en/1.1.x/)
-
-        Whereas Django does a lot of things for us out of the box, Flask allows us to add only what we need. 
-     
-
-    * [Virtual environment](https://virtualenv.pypa.io/en/stable/installation.html)
-
-        This ensures you'll be able to install the correct packages without interfering with Python on your machine.
-
-        Before you begin, please ensure you have this installed globally. 
+Ceci est une version améliorée(déboguée et avec de nouvelles implémentations) du projet d'origine, <br>
+qui se trouve [**ici**](https://github.com/OpenClassrooms-Student-Center/Python_Testing).<br>
+Cette version à une branche, par bug corrigé, et amélioration ajoutée.<br>
+Elle a aussi plusieurs types de tests.<br><br>
 
 
-3. Installation
 
-    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a a virtual python environment within that directory.
 
-    - Next, type <code>source bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
 
-    - Rather than hunting around for the packages you need, you can install in one step. Type <code>pip install -r requirements.txt</code>. This will install all the packages listed in the respective file. If you install a package, make sure others know by updating the requirements.txt file. An easy way to do this is <code>pip freeze > requirements.txt</code>
+## Téléchargement et installation 
 
-    - Flask requires that you set an environmental variable to the python file. However you do that, you'll want to set the file to be <code>server.py</code>. Check [here](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application) for more details
+Cette application utilise **Python 3.10.4**.<br>
+Et **git** (si vous ne l'avez pas encore : [téléchargement/installation ici](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git))<br>
+- Avec votre terminal, allez dans le dossier ou vous souhaitez placer le projet.<br/> 
+Exemple : ``cd C:\Users\damie\Documents\Python_Project``
+- Copiez le projet : ``git clone https://github.com/DamienZeh/Gudlft_p11_ocr.git``
+- Puis, allez dans ce projet : ``cd Gudlft_p11_ocr\``<br/> 
 
-    - You should now be ready to test the application. In the directory, type either <code>flask run</code> or <code>python -m flask run</code>. The app should respond with an address you should be able to go to using your browser.
+Installation Windows:
+- puis créez l’environnement virtuel avec  ``python -m venv env``<br/>
+	_(‘env’ est le nom que j’ai sur mon environnement virtuel, il est aussi noté dans le gitignore.)_
+- Puis activez le : ``.\env\Scripts\activate`` (pour windows)<br/>
+	_(Vous avez maintenant un ‘(env)’ d’affiché, l'environnement est activé)_<br>
+cette commande devra être lancée à chaque redémarrage du terminal.<br>
 
-4. Current Setup
+Installation Linux :
+- puis créez l’environnement virtuel avec ``python3 -m venv env`` <br/>
+	_(‘env’ est le nom que j’ai sur mon environnement virtuel, il est aussi noté dans le gitignore.)_
+- Puis activez le : ``source env/bin/activate`` <br/>
+	_(Vous avez maintenant un ‘(env)’ d’affiché, l'environnement est activé)_<br>
+cette commande devra être lancée à chaque redémarrage du terminal.
 
-    The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around having a DB until we actually need one. The main ones are:
-     
-    * competitions.json - list of competitions
-    * clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
+Puis, l’installation  des packages présents dans le requirements.txt:<br> ``pip install -r requirements.txt``
+<br/><br>
 
-5. Testing
 
-    You are free to use whatever testing framework you like-the main thing is that you can show what tests you are using.
+## Lancer l'application
+Pour lancer l'application, tapez les commandes:<br/>
+- Sur Windows:
+	- ``$env:FLASK_APP = "server.py" ``<br/>
+- Sur Linux:
+	- ``export FLASK_APP=server.py" ``<br/>
 
-    We also like to show how well we're testing, so there's a module called 
-    [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
+Puis :  ``flask run ``<br/>
+Il suffira ensuite d'aller sur le site : **http://127.0.0.1:5000/**.<br/>
+Pour se connecter, il faut faire parti des clubs inscrits. ID de ces clubs en exemple :<br/>
+- john@simplylift.co
+- admin@irontemple.com
+- kate@shelifts.co.uk
+
+Puis il suffit de choisir la compétition ou l'on veut s'inscrire, et choisir le nombre de places,<br/>
+grâce aux points dont le club dispose. **Attention, pour rappel, 3 points = 1 place !**<br/>
+Puis, l'utilisateur peut se déconnecter, s'il le souhaite.
+<br/><br/>
+
+
+## Lancer les tests
+Pour lancer les tests (unitaires, intégration, et fonctionnel), on se sert du pack **pytest** : <br>
+- ``pytest -v``<br><br>
+
+
+## Couverture du code
+Pour voir le pourcentage de couverture de ces tests, on se sert de **coverage**.<br>
+Il y a un fichier .coveragerc, qui exclut les fichiers autres que **server.py**,<br>
+car on a besoin d'afficher la couverture des tests seulement sur ce fichier. Vous tapez: <br>
+- ``pytest --cov`` <br>
+
+Si on souhaite accéder au rapport (pour par exemple voir les Missings, en plus), on fait :<br> 
+- ``coverage report -m`` <br><br>
+
+
+## Tests de performances
+Pour lancer les tests de performances, on se sert du pack **locust**.<br/>
+Il faut que l'application soit lancée(comme on a vu un peu plus haut), puis ouvrez un autre terminal,<br/>
+- Sur Windows:<br/>
+``locust -f tests\performance_tests\locustfile.py --web-host localhost``.<br/>
+- Sur Linux:<br/>
+``locust -f tests/performance_tests/locustfile.py --web-host localhost``.<br/>
+
+Il faudra ensuite aller sur **http://localhost:8089**, et lancer les tests.<br/>
+Ou si vous souhaitez juste voir les résultats déjà réalisés, ils sont disponibles dans le projet(fichiers .png).<br/><br/>
+
+## Vérification du code
+- Pour faire un contrôle du code avec **flake8** (avec max lenght à 79, sauf pour le settings.py), tapez :<br/>
+``flake8 --max-line-length 79 --exclude=env`` ;<br/><br/>
+
+## Auteur
+
+* **Damien Hernandez** _alias_ [DamienZeh](https://damienhernandez.fr/)
+
+
+
+
+
+
+
 
