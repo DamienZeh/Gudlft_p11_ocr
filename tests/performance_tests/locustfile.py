@@ -12,7 +12,9 @@ class GudlftPerfTest(HttpUser):
 
     @task
     def show_summary(self):
-        self.client.post("/show_summary", data={"email": "kate@shelifts.co.uk"})
+        self.client.post(
+            "/show_summary", data={"email": "kate@shelifts.co.uk"}
+        )
 
     @task
     def purchase(self):
