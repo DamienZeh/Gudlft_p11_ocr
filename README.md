@@ -22,7 +22,7 @@ Elle a aussi plusieurs types de tests.<br><br>
 
 ## Téléchargement et installation 
 
-Cette application utilise **Python 3.10.4**.<br>
+Cette application utilise **Python 3.10.5** ([plus d'informations ici](https://www.python.org/downloads/release/python-3105/)).<br>
 Et **git** (si vous ne l'avez pas encore : [téléchargement/installation ici](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git))<br>
 - Avec votre terminal, allez dans le dossier ou vous souhaitez placer le projet.<br/> 
 Exemple : ``cd C:\Users\damie\Documents\Python_Project``
