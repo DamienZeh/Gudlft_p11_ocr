@@ -52,7 +52,7 @@ Pour lancer l'application, tapez les commandes:<br/>
 - Sur Windows:
 	- ``$env:FLASK_APP = "server.py" ``<br/>
 - Sur Linux:
-	- ``export FLASK_APP=server.py" ``<br/>
+	- ``export FLASK_APP=server.py ``<br/>
 
 Puis :  ``flask run ``<br/>
 Il suffira ensuite d'aller sur le site : **http://127.0.0.1:5000/**.<br/>
