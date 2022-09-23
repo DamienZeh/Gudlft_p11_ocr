@@ -68,13 +68,13 @@ Puis, l'utilisateur peut se déconnecter, s'il le souhaite.
 
 
 ## Lancer les tests
-Pour lancer les tests (unitaires, intégration, et fonctionnel), on se sert du pack **pytest** : <br>
+Pour lancer les tests (unitaires, intégrations, et fonctionnels), on se sert du pack **pytest** : <br>
 - ``pytest -v``<br><br>
 
 
 ## Couverture du code
 Pour voir le pourcentage de couverture de ces tests, on se sert de **coverage**.<br>
-Il y a un fichier .coveragerc, qui exclut les fichiers autres que **server.py**,<br>
+Il y a un fichier **.coveragerc**, qui exclut les fichiers autres que **server.py**,<br>
 car on a besoin d'afficher la couverture des tests seulement sur ce fichier. Vous tapez: <br>
 - ``pytest --cov`` <br>
 
@@ -84,7 +84,7 @@ Si on souhaite accéder au rapport (pour par exemple voir les Missings, en plus)
 
 ## Tests de performances
 Pour lancer les tests de performances, on se sert du pack **locust**.<br/>
-Il faut que l'application soit lancée(comme on a vu un peu plus haut), puis ouvrez un autre terminal,<br/>
+Il faut que l'application soit lancée(comme on a vu un peu plus haut), puis ouvrez un autre terminal.<br/>
 - Sur Windows:<br/>
 ``locust -f tests\performance_tests\locustfile.py --web-host localhost``.<br/>
 - Sur Linux:<br/>
